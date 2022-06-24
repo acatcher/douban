@@ -42,7 +42,7 @@
         <ul class="nav">
             <li class="nav-item">
                 <a href="/">
-                    <img src="https://m.imooc.com/static/wap/static/common/img/logo2.png" class="mt-1"
+                    <img src="./resources/movies/logo.png" class="mt-1"
                          style="width: 100px">
                 </a>
             </li>
@@ -167,7 +167,7 @@
 
 		//发送ajax请求
         $.ajax({
-            url: "/register",
+            url: "/registernow",
             type: "post",
             dataType: "json",
             data: $("#frmLogin").serialize(),

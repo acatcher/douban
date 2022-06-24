@@ -1,11 +1,10 @@
 package com.yzx.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.yzx.entity.Category;
-import com.yzx.entity.Evaluation;
-import com.yzx.entity.Movie;
+import com.yzx.entity.*;
 import com.yzx.service.CategoryService;
 import com.yzx.service.EvaluationService;
+import com.yzx.service.MemberService;
 import com.yzx.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,6 +31,9 @@ public class MovieController {
 
     @Resource
     private EvaluationService evaluationService;
+
+    @Resource
+    private MemberService memberService;
 
 //  首页加载
     @GetMapping("/")
@@ -55,16 +58,23 @@ public class MovieController {
 
 //    获取详细信息
     @GetMapping("/movie/{id}")
-    public ModelAndView getDetail(@PathVariable("id") Long movieId){
-        //book info
+    public ModelAndView getDetail(@PathVariable("id") Long movieId, HttpSession session){
+        // book info
         Movie movie = movieService.getMovie(movieId);
-        //evaluation info
+        // evaluation info
         List<Evaluation> evaluations = evaluationService.getEvaluationById(movieId);
+        // get user info from session
+        Member member = (Member)session.getAttribute("loginMember");
 
         //mav return
         ModelAndView mav = new ModelAndView("/movieDetails");
         mav.addObject("book", movie);
         mav.addObject("evaluationList", evaluations);
+        // read state
+        if(member != null){
+            MemberReadState memberReadState = memberService.selectMemberReadState(member.getMemberId(), movieId);
+            mav.addObject("memberReadState", memberReadState);
+        }
 
         return mav;
     }

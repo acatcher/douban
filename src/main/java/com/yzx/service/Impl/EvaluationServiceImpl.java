@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 @Service("evaluationService")
 @Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = true)
@@ -22,6 +23,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     @Resource
     private MovieMapper movieMapper;
+
 
     @Override
     public List<Evaluation> getEvaluationById(Long id) {
@@ -39,9 +41,33 @@ public class EvaluationServiceImpl implements EvaluationService {
             e.setMovie(movie);
         }
 
-
-
-
         return evaluations;
+    }
+
+    @Override
+    @Transactional
+    public Evaluation addEvaluation(Long memberId, Long bookId, Integer score, String content) {
+        Evaluation evaluation = new Evaluation();
+        evaluation.setMemberId(memberId);
+        evaluation.setBookId(bookId);
+        evaluation.setScore(score);
+        evaluation.setContent(content);
+        evaluation.setCreateTime(new Date());
+        evaluation.setState("enable");
+        evaluation.setEnjoy(0);
+        evaluationMapper.insert(evaluation);
+
+        return evaluation;
+    }
+
+    @Override
+    @Transactional
+    public Evaluation likeEvaluation(Long evaluationId) {
+
+        Evaluation evaluation = evaluationMapper.selectById(evaluationId);
+        evaluation.setEnjoy(evaluation.getEnjoy()+1);
+        evaluationMapper.updateById(evaluation);
+        return evaluation;
+
     }
 }

@@ -51,10 +51,13 @@
         })
 
         $(function () {
+
             <#if memberReadState ??>
             //重选阅读状态
             $("*[data-read-state='${memberReadState.readState}']").addClass("highlight");
             </#if>
+
+
             <#if !loginMember ??>
             $("*[data-read-state],#btnEvaluation,*[data-evaluation-id]").click(function(){
                 //未登录情况下提示"需要登录"
@@ -107,6 +110,7 @@
             //评论点赞
             $("*[data-evaluation-id]").click(function(){
                 var evaluationId = $(this).data("evaluation-id");
+                console.log(evaluationId);
                 $.post("/enjoy",{evaluationId:evaluationId},function(json){
                     if(json.code == "0"){
                         $("*[data-evaluation-id='" + evaluationId + "'] span").text(json.evaluation.enjoy);
@@ -124,7 +128,7 @@
         <ul class="nav">
             <li class="nav-item">
                 <a href="/">
-                    <img src="https://m.imooc.com/static/wap/static/common/img/logo2.png"  class="mt-1"
+                    <img src="/resources/movies/logo.png"  class="mt-1"
                          style="width: 100px">
                 </a>
             </li>
@@ -191,7 +195,7 @@
                     <span class="mr-2 small pt-1">seeker</span>
                     <span class="stars mr-2" data-score="${evaluation.score}"></span>
 
-                    <button type="button" data-evaluation-id="${evaluation.evaluationId}"
+                    <button type="button" data-evaluation-id="${(evaluation.evaluationId)?c}"
                             class="btn btn-success btn-sm text-white float-right" style="margin-top: -3px;">
                         <img style="width: 24px;margin-top: -5px;" class="mr-1"
                              src="https://img3.doubanio.com/f/talion/7a0756b3b6e67b59ea88653bc0cfa14f61ff219d/pics/card/ic_like_gray.svg"/>

@@ -5,4 +5,7 @@ import com.yzx.entity.Movie;
 
 public interface MovieMapper extends BaseMapper<Movie> {
 
+    // spring task
+    // compute score in schedule
+    public void updateAvgScore();
 }

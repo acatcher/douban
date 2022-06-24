@@ -46,4 +46,10 @@ public class MovieServiceImpl implements MovieService {
         Movie movie = movieMapper.selectById(movieId);
         return movie;
     }
+
+    @Override
+    @Transactional
+    public void updateAvgScore() {
+        movieMapper.updateAvgScore();
+    }
 }

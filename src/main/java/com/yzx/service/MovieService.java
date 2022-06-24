@@ -10,4 +10,6 @@ public interface MovieService {
     public IPage<Movie> getPage(Long categoryId, String order, Integer page, Integer rows);
 
     public Movie getMovie(Long movieId);
+
+    public void updateAvgScore();
 }
