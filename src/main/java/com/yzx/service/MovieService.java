@@ -12,4 +12,11 @@ public interface MovieService {
     public Movie getMovie(Long movieId);
 
     public void updateAvgScore();
+
+    public Movie addMovie(Movie movie);
+
+    public Movie updateMovie(Movie movie);
+
+    public void deleteMovie(Long id);
+
 }

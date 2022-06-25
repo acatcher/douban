@@ -140,6 +140,20 @@
             <version>1.14</version>
         </dependency>
 
+        <!-- 14. Spring MVC文件上传底层依赖 -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+        <!-- 15. Jsoup Json Html解析组件 -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.12.1</version>
+        </dependency>
+
 
 
     </dependencies>

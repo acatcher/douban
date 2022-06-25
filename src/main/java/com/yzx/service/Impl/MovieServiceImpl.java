@@ -3,7 +3,11 @@ package com.yzx.service.Impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yzx.entity.Evaluation;
+import com.yzx.entity.MemberReadState;
 import com.yzx.entity.Movie;
+import com.yzx.mapper.EvaluationMapper;
+import com.yzx.mapper.MemberReadStateMapper;
 import com.yzx.mapper.MovieMapper;
 import com.yzx.service.MovieService;
 import org.springframework.stereotype.Service;
@@ -18,6 +22,12 @@ import javax.annotation.Resource;
 public class MovieServiceImpl implements MovieService {
     @Resource
     private MovieMapper movieMapper;
+
+    @Resource
+    private MemberReadStateMapper memberReadStateMapper;
+
+    @Resource
+    private EvaluationMapper evaluationMapper;
 
     @Override
     public IPage<Movie> getPage(Long categoryId, String order, Integer page, Integer rows) {
@@ -52,4 +62,34 @@ public class MovieServiceImpl implements MovieService {
     public void updateAvgScore() {
         movieMapper.updateAvgScore();
     }
+
+    @Override
+    @Transactional
+    public Movie addMovie(Movie movie) {
+        movieMapper.insert(movie);
+        return movie;
+    }
+
+    @Override
+    @Transactional
+    public Movie updateMovie(Movie movie) {
+        movieMapper.updateById(movie);
+        return movie;
+    }
+
+    @Override
+    @Transactional
+    public void deleteMovie(Long id) {
+
+        movieMapper.deleteById(id);
+        QueryWrapper<MemberReadState> qwMRS = new QueryWrapper<>();
+        qwMRS.eq("book_id", id);
+        QueryWrapper<Evaluation> qwEva = new QueryWrapper<>();
+        qwEva.eq("book_id", id);
+        memberReadStateMapper.delete(qwMRS);
+        evaluationMapper.delete(qwEva);
+
+    }
+
+
 }
